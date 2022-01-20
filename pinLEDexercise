@@ -1,0 +1,33 @@
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(0,1); // RX, TX
+
+const int ledPin = 13;      // the pin that the LED is attached to
+
+#define HEADER        '|'
+#define MESSAGE_BYTES  5  // the total bytes in a message
+
+void setup()
+{
+  // initialize the serial communication:
+//  Serial.begin(9600);
+  // initialize the ledPin as an output:
+  pinMode(ledPin, OUTPUT);
+  
+  // bluetooth serial
+  mySerial.begin(9600);
+}
+
+void loop() {
+
+  if ( mySerial.available() >= MESSAGE_BYTES)
+  {
+    if( mySerial.read() == HEADER)
+    {
+      int brightness = mySerial.read();
+      
+      analogWrite(ledPin, brightness);
+    }
+  }
+
+}
